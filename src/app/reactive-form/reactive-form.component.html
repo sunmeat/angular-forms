@@ -1,0 +1,26 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+    <label for="email" class="form-label">Логин (почта):</label>
+    <input id="email" formControlName="email" type="email" class="form-input" 
+      [ngClass]="{
+        'input-error': emailControl?.invalid && (emailControl?.dirty || emailControl?.touched)}"
+    />
+    <div *ngIf="emailControl?.invalid && (emailControl?.dirty || emailControl?.touched)"
+    class="error-message">
+      <div *ngIf="emailControl?.errors?.['required']">Поле имейла обязательное</div>
+      <div *ngIf="emailControl?.errors?.['email']">Неверный формат почты</div>
+    </div>
+    
+    <label for="password" class="form-label">Пароль:</label>
+    <input id="password" formControlName="password" type="password" class="form-input" 
+      [ngClass]="{'input-error':
+        passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)}"
+    />
+    <div *ngIf="passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)"
+    class="error-message">
+      <div *ngIf="passwordControl?.errors?.['required']">Поле пароля обязательное</div>
+    </div>
+    
+    <button type="submit" class="form-button">Отправить</button>
+  </form>
+  
+  <pre class="json-output">{{ form.value | json }}</pre>

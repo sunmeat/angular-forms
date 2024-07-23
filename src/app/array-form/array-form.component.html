@@ -1,0 +1,43 @@
+<form [formGroup]="formModel.form" (ngSubmit)="onSubmit()" class="form-container">
+    <label for="email" class="form-label">Логин (почта):</label>
+    <input id="email" formControlName="email" type="email" class="form-input" 
+      [ngClass]="{'input-error': emailControl?.invalid && (emailControl?.dirty || emailControl?.touched)}"
+    />
+    <div *ngIf="emailControl?.invalid && (emailControl?.dirty || emailControl?.touched)"
+      class="error-message">
+      <div *ngIf="emailControl?.errors?.['required']">Поле имейла обязательное</div>
+      <div *ngIf="emailControl?.errors?.['email']">Неверный формат почты</div>
+    </div>
+    
+    <label for="password" class="form-label">Пароль:</label>
+    <input id="password" formControlName="password" type="password" class="form-input" 
+      [ngClass]="{'input-error': passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)}"
+    />
+    <div *ngIf="passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)"
+      class="error-message">
+      <div *ngIf="passwordControl?.errors?.['required']">Поле пароля обязательное</div>
+    </div>
+  
+    <label for="terms" class="form-label">
+      <input id="terms" type="checkbox" formControlName="terms" />
+      Согласен с условиями
+    </label>
+  
+    <div *ngIf="formModel.form.get('terms')?.invalid && formModel.form.get('terms')?.touched"
+    class="error-message">
+      <div>Необходимо согласие с условиями</div>
+    </div>
+  
+    <div formArrayName="hobbies" class="hobbies-container">
+      <div *ngFor="let hobby of hobbies.controls; let i = index" [formGroupName]="i" class="hobby-item">
+        <input id="hobby-{{i}}" formControlName="name" class="form-input" />
+        <button type="button" (click)="removeHobby(i)" class="remove-button">-</button>
+      </div>
+      <button type="button" (click)="addHobby()" class="add-button">Добавить увлечение</button>
+    </div>
+  
+    <button type="submit" class="form-button" [disabled]="!formModel.form.valid ||
+    !formModel.form.get('terms')?.value">Отправить</button>
+  </form>
+  
+  <pre class="json-output">{{ formModel.form.value | json }}</pre>
